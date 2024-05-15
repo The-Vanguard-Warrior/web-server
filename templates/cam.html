@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale:1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+      rel="stylesheet"
+      data-purpose="Layout StyleSheet"
+      title="Web Awesome"
+      href="/css/app-wa-a60ddbceb7292f11c9e430d067b1eb9f.css?vsn=d"
+    >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-thin.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-solid.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-regular.css"
+      >
+
+      <link
+        rel="stylesheet"
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/sharp-light.css"
+      >
+        <title>Guardian</title>
+    </head>
+    <body class="relative">
+        <img src="https://firebasestorage.googleapis.com/v0/b/chat-app-cd9ef.appspot.com/o/new-bg.png?alt=media&token=5ed49e7c-4be5-46dd-b356-7ccce96dd75b" alt="bg" class="w-screen h-screen"/>
+        <div class="absolute top-32 right-40 w-80 h-48 rounded-lg bg-[#E5E4E2] text-3xl flex justify-between items-center px-8">
+            <div class="flex flex-col gap-10 items-start justify-center text-orange-600">
+                <p>Nhiệt độ</p>
+                <p>Độ ẩm</p>
+            </div>
+            <div class="flex flex-col gap-10 items-start justify-center text-red-600">
+                <p>20</p>
+                <p>20</p>
+            </div>
+        </div>
+        <div class="absolute right-40 top-96 h-48 w-80 rounded-lg bg-[#E5E4E2] text-2xl flex justify-between items-center px-8 text-orange-600">
+            <p>Ip Address </p>
+            <p>{{ip}}</p>
+        </div>
+        <button class="absolute right-16 bottom-16 text-3xl flex justify-center items-center gap-5 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline active:scale-75 transform transition duration-300 ease-in-out" id="delete-camera" name="{{id}}">
+            <i class="fa-solid fa-trash"></i>
+            Delete Camera
+        </button>
+        <section class="absolute top-10 left-10">
+            <!-- <img src="{{ url_for('web')}}" alt="Upload video" class="w-[670px] h-[410px]"> -->
+            <img src="{{ url_for('webapp', ip=ip)}}" class="w-[850px] h-[560px]" alt="Upload video">
+            <!-- <img src="https://firebasestorage.googleapis.com/v0/b/bcu-study-space-cded8.appspot.com/o/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202024-04-24%20lu%CC%81c%2014.26.46.png?alt=media&token=154fad58-f098-437b-8a3a-aaad169e1ba1" alt="Upload Video"/> -->
+        </section>
+        <button id="callButton" class="absolute left-16 bottom-16 rounded-lg bg-red-600 text-white text-3xl flex justify-center items-center gap-5 px-8 py-4 active:scale-75 transform transition duration-300 ease-in-out">
+            <i class="fa-regular fa-phone w-8 h-8"></i>
+            Call 
+        </button>
+        <img src="https://firebasestorage.googleapis.com/v0/b/chat-app-cd9ef.appspot.com/o/short-logo.png?alt=media&token=d2348bf7-7d69-4f2e-b1f6-b844283b30d3" alt="bot" class="absolute right-0 top-0 h-32" id="back"/>
+    </body>
+    <script>
+        document.getElementById("callButton").addEventListener("click", function() {
+            // Send HTTP request to Flask backend
+            fetch("/call", {
+                method: "POST"
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // Handle response from backend if needed
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation:", error);
+            });
+        });
+
+        document.getElementById("back").addEventListener("click", function() {
+            // Send HTTP request to Flask backend
+            window.location = '/';
+        });
+
+        const deleteButton = document.getElementById('delete-camera');
+
+        deleteButton.addEventListener('click', async () => {
+            const cameraId = deleteButton.getAttribute('name'); // Replace with the actual camera ID
+            const response = await fetch('/delete_cam', {
+                method: 'DELETE',
+                headers: {
+                'Camera-ID': cameraId
+                }
+            });
+
+            if (response.ok) {
+                console.log('Camera deleted successfully!');
+                window.location = '/';
+            } else {
+                console.error('Error deleting camera:', response.status);
+            }
+        });
+    </script>
+</html>
