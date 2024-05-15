@@ -11,6 +11,6 @@ def callFireFighter(area, room):
 
     client.calls.create(
         twiml=f'<Response><Say>Warning, there is a fire incident in area {area}, room {room}.</Say></Response>',
-        to='+84949521462',
-        from_='+12676338251'
+        to=os.getenv("TO_NUMBER"),
+        from_=os.getenv("FROM_NUMBER")
     )
