@@ -1,8 +1,12 @@
 from twilio.rest import Client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def callFireFighter(area, room):
-    account_sid = 'AC63d6b4da907533c627b381a7bd48cee5'
-    auth_token = '6197bafdc9d45f67b78e015bb272b77d'
+    account_sid = os.getenv('ACCOUNT_SID')
+    auth_token = os.getenv('AUTH_TOKEN')
     client = Client(account_sid, auth_token)
 
     client.calls.create(
