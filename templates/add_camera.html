@@ -17,7 +17,7 @@
             </div>
             <nav class="flex gap-10 text-xl">
                 <a href="/" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Home</a>
-                <!-- <a href="#" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Add location</a> -->
+                <a href="/add_location" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Add location</a>
             </nav>
         </header>
         <form class="mt-40" id="camera-form">
@@ -26,13 +26,31 @@
               <input type="text" id="ip_address" name="ip_address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="If it's not an IP camera, enter 0" required>
             </div>
             <div class="mb-4">
-                <label for="device_type" class="block text-gray-700 font-bold mb-2">Device Type</label>
-                <select id="device_type" name="device_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                  <option value="">Select device type</option>
-                  <option value="ip_cam">IP Camera</option>
-                  <option value="not_ip_cam">Not IP Camera</option>
-                </select>
-              </div>
+              <label for="device_type" class="block text-gray-700 font-bold mb-2">Device Type</label>
+              <select id="device_type" name="device_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="">Select device type</option>
+                <option value="ip_cam">IP Camera</option>
+                <option value="not_ip_cam">Not IP Camera</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label for="area" class="block text-gray-700 font-bold mb-2">Device Type</label>
+              <select id="area" name="area" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="">Select area</option>
+                {% for area_option in area_options %}
+                  <option value="{{area_option.area}}">{{area_option.area}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-4">
+              <label for="room" class="block text-gray-700 font-bold mb-2">Device Type</label>
+              <select id="room" name="room" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="">Select area</option>
+                {% for room_option in room_options %}
+                  <option value="{{room_option}}">{{room_option}}</option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="flex justify-end">
               <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline active:scale-75 transform transition duration-300 ease-in-out">Add Camera</button>
             </div>

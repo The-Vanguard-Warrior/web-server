@@ -54,19 +54,19 @@
             </div>
             <nav class="flex gap-10 text-xl">
                 <a href="/add_camera" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Add Camera</a>
-                <!-- <a href="#" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Add location</a> -->
+                <a href="/add_location" class="text-white bg-blue-500 px-4 py-2 rounded-lg hover:bg-white hover:text-blue-500 active:scale-75 transform transition duration-300 ease-in-out">Add location</a>
             </nav>
         </header>
         <section class="px-8 py-4 bg-white rounded-lg mt-20 h-full w-full flex flex-wrap gap-10">
             {% for camera in cameras %}
                 {% if camera.ipCam %}
-                    <a class="camera"  href="webcam/{{camera.ip_address}}&{{camera.id}}">
+                    <a class="camera"  href="webcam/{{camera.ip_address}}&{{camera.id}}&{{camera.area}}&{{camera.room}}">
                         <!-- <h2>Camera {{loop.index}}</h2>-->
                         <img src="{{ url_for('webapp', ip=camera.ip_address)}}" alt="Upload video"> 
                         <!-- <p>IP Address: {{ camera.ip_address }}</p>  -->
                     </a>
                 {% else %}
-                    <a class="camera"  href="/weblap/{{camera.id}}">
+                    <a class="camera"  href="/weblap/{{camera.id}}&{{camera.area}}&{{camera.room}}">
                         <!-- <h2>Camera {{loop.index}}</h2> -->
                         <img src="{{ url_for('web')}}" alt="Upload video">
                         <!-- <p>IP Address: {{ camera.ip_address }}</p> -->

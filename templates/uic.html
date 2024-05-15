@@ -62,7 +62,7 @@
             <img src="{{ url_for('web')}}" alt="Upload video" class="w-[900px] h-[600px]">
             <!-- <img src="https://firebasestorage.googleapis.com/v0/b/bcu-study-space-cded8.appspot.com/o/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202024-04-24%20lu%CC%81c%2014.26.46.png?alt=media&token=154fad58-f098-437b-8a3a-aaad169e1ba1" alt="Upload Video" class="w-[850px] h-[560px]/> -->
         </section>
-        <button id="callButton" class="absolute left-16 bottom-16 rounded-lg bg-red-600 text-white text-3xl flex justify-center items-center gap-5 px-8 py-4 active:scale-75 transform transition duration-300 ease-in-out">
+        <button id="callButton" class="absolute left-16 bottom-16 rounded-lg bg-red-600 text-white text-3xl flex justify-center items-center gap-5 px-8 py-4 active:scale-75 transform transition duration-300 ease-in-out name" name="{{area,room}}">
             <i class="fa-regular fa-phone w-8 h-8"></i>
             Call 
         </button>
@@ -70,10 +70,17 @@
         <img src="https://firebasestorage.googleapis.com/v0/b/chat-app-cd9ef.appspot.com/o/short-logo.png?alt=media&token=d2348bf7-7d69-4f2e-b1f6-b844283b30d3" alt="bot" class="absolute right-0 top-0 h-32" id="back"/>
     </body>
     <script>
+        const callButton = document.getElementById("callButton");
         document.getElementById("callButton").addEventListener("click", function() {
             // Send HTTP request to Flask backend
+            const cameraId = callButton.getAttribute("name");
+            const info = cameraId.split(",");
             fetch("/call", {
-                method: "POST"
+                method: "POST",
+                headers: {
+                    "area": info[0],
+                    "room": info[1]
+                }
             })
             .then(response => {
                 if (!response.ok) {
