@@ -3,6 +3,7 @@ import cv2
 import math
 from testMessage import send_notify
 import cvzone
+# from temhumid import temp, humidity
 
 def video_detection(path_x):
     video_capture = path_x
@@ -22,6 +23,13 @@ def video_detection(path_x):
     color = (255, 255, 255)
     thickness = 10
     notification = "NOTHING"
+
+    font2 = cv2.FONT_HERSHEY_SIMPLEX
+    org2 = (150, 150)
+    fontScale2 = 5
+    color2 = (255, 255, 255)
+    thickness2 = 10
+    notification2 = f'Temperature:   -  Humidity: '
     while True:
         success, frame = cap.read()
         results = model(frame, stream=True)
@@ -72,7 +80,12 @@ def video_detection(path_x):
                 if class_name == "fire" and confidence > 50 and notify:
                     send_notify()
                     notify = False
-            
+
+                temperature = 30
+                humid = 50
+                notification2 = f"Temperature: {temperature}  -  Humidity: {humid}"
+
+                cv2.putText(frame, notification2, org2, font2, fontScale2, color2, thickness2, cv2.LINE_AA)
                 # color = (255, 255, 255)
                 # notification = "NOTHING"
                 

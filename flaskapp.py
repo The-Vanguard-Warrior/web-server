@@ -18,7 +18,11 @@ from pymongo import MongoClient
 
 from fall_function import fall_detection
 
-from twilio_functions import callFireFighter
+# from twilio_functions import callFireFighter
+
+from combine import combine_detection
+# from temhumid import humidity, temp
+import time
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "jackienguyen"
@@ -53,10 +57,18 @@ def generate_frames_web(path_x):
     # yolo_output = fall_detection(path_x)
     for detection_ in yolo_output:
         ref, buffer = cv2.imencode('.jpg', detection_)
+    
 
         frame = buffer.tobytes()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+def generate_frames_fall(path_x):
+    fall_output = combine_detection(path_x)
+    for detection_ in fall_output:
+        ref, buffer = cv2.imencode('.jpg', detection_)
+
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/', methods=['GET', 'POST'])
 # @app.route('/home', methods=['GET', 'POST'])
@@ -77,7 +89,7 @@ def call():
     room = request.headers.get('room')
     # print(area, room)
     # print("received")
-    callFireFighter(area, room)
+    # callFireFighter(area, room)
     return jsonify({"message": "Function call() executed successfully"})
 
 # @app.route('/webcam', methods=['GET', 'POST'])
@@ -89,6 +101,8 @@ def call():
 def webcam(ip, id, area, room):
     session.clear()
     result = "Fire"
+    # temperature = temp()
+    # humid = humidity()
     # yolo_output = video_detection(path_x=f'http://{ip}:8080/video')
     # for _, class_name in yolo_output:
     #     result = class_name
@@ -97,11 +111,13 @@ def webcam(ip, id, area, room):
 @app.route('/weblap/<id>&<area>&<room>', methods=['GET', 'POST'])
 def webLapCam(id, area, room):
     session.clear()
-    result = "Fire"
+    # temperature = temp()
+    # humid = humidity()
+    return render_template("uic.html", id=id, area = area, room=room)
     # yolo_output = video_detection(path_x=f'http://{ip}:8080/video')
     # for _, class_name in yolo_output:
     #     result = class_name
-    return render_template("uic.html", id=id, area = area, room=room)
+        
 
 @app.route('/FrontPage', methods=['GET', 'POST'])
 def front():
@@ -138,7 +154,7 @@ def add_location():
 
 @app.route('/web')
 def web():
-    return Response(generate_frames_web(path_x=0), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(generate_frames_fall(path_x=0), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/webapp/<ip>')
 def webapp(ip):
@@ -194,6 +210,12 @@ def delete_cam():
         return 'Camera deleted successfully'
     else:
         return 'Error deleting camera', 404
+    
+# @app.route('/get_environment', methods=['GET'])
+# def get_environment():
+#     temperature = temp()
+#     humid = humidity()
+#     return jsonify({'temp': temperature, 'humid': humid})
 
 
 app.run(debug=True)

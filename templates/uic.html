@@ -40,27 +40,33 @@
     </head>
     <body class="relative">
         <img src="https://firebasestorage.googleapis.com/v0/b/chat-app-cd9ef.appspot.com/o/new-bg.png?alt=media&token=5ed49e7c-4be5-46dd-b356-7ccce96dd75b" alt="bg" class="w-screen h-screen"/>
-        <div class="absolute top-32 right-40 w-80 h-48 rounded-lg bg-[#E5E4E2] text-3xl flex justify-between items-center px-8">
+        <!-- <div class="absolute top-32 right-40 w-80 h-48 rounded-lg bg-[#E5E4E2] text-3xl flex justify-between items-center px-8">
             <div class="flex flex-col gap-10 items-start justify-center text-orange-600">
                 <p>Nhiệt độ</p>
                 <p>Độ ẩm</p>
             </div>
             <div class="flex flex-col gap-10 items-start justify-center text-red-600">
-                <p>20</p>
-                <p>20</p>
+                <p id="temp"></p>
+                <p id="humid"></p>
             </div>
-        </div>
-        <div class="absolute right-40 top-96 h-48 w-80 rounded-lg bg-[#E5E4E2] text-3xl flex justify-between items-center px-8 text-orange-600">
-            <p>Ip Address </p>
-            <p>0</p>
+        </div> -->
+        <div class="absolute top-96 right-40 w-80 h-48 rounded-lg bg-[#E5E4E2] text-3xl flex justify-between items-center px-8">
+            <div class="flex flex-col gap-10 items-start justify-center text-orange-600">
+                <p>Khu vực</p>
+                <p>Phòng</p>
+            </div>
+            <div class="flex flex-col gap-10 items-start justify-center text-red-600">
+                <p>{{area}}</p>
+                <p>{{room}}</p>
+            </div>
         </div>
         <button class="absolute right-16 bottom-16 text-3xl flex justify-center items-center gap-5 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline active:scale-75 transform transition duration-300 ease-in-out" id="delete-camera" name="{{id}}">
             <i class="fa-solid fa-trash"></i>
             Delete Camera
         </button>
         <section class="absolute top-6 left-6">
-            <img src="{{ url_for('web')}}" alt="Upload video" class="w-[900px] h-[600px]">
-            <!-- <img src="https://firebasestorage.googleapis.com/v0/b/bcu-study-space-cded8.appspot.com/o/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202024-04-24%20lu%CC%81c%2014.26.46.png?alt=media&token=154fad58-f098-437b-8a3a-aaad169e1ba1" alt="Upload Video" class="w-[850px] h-[560px]/> -->
+            <!-- <img src="{{ url_for('web')}}" alt="Upload video" class="w-[900px] h-[600px]"> -->
+            <img src="https://firebasestorage.googleapis.com/v0/b/chat-app-cd9ef.appspot.com/o/A%CC%89nh%20ma%CC%80n%20hi%CC%80nh%202024-05-26%20lu%CC%81c%2023.56.15.png?alt=media&token=494d1f65-05bb-4cf0-af0f-ea0273e1a192" alt="Upload Video" class="w-[850px] h-[560px]"/>
         </section>
         <button id="callButton" class="absolute left-16 bottom-16 rounded-lg bg-red-600 text-white text-3xl flex justify-center items-center gap-5 px-8 py-4 active:scale-75 transform transition duration-300 ease-in-out name" name="{{area,room}}">
             <i class="fa-regular fa-phone w-8 h-8"></i>
@@ -119,5 +125,21 @@
                 console.error('Error deleting camera:', response.status);
             }
         });
+
+        function fetchEnvironmentData() {
+            fetch('/get_environment')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temp').textContent = data.temp.toFixed(2);
+                    document.getElementById('humid').textContent = data.humid.toFixed(2);
+                })
+                .catch(error => console.error('Error fetching environment data:', error));
+        }
+
+        // Fetch data every second
+        setInterval(fetchEnvironmentData, 1000);
+
+        // Fetch initial data
+        fetchEnvironmentData();
     </script>
 </html>

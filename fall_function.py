@@ -6,7 +6,7 @@ from ultralytics import YOLO
 def fall_detection(path_x):
     cap = cv2.VideoCapture(path_x)
 
-    model = YOLO('mr.pt')
+    model = YOLO('fal_det_1.pt')
 
     classnames = []
     with open('classes.txt', 'r') as f:
